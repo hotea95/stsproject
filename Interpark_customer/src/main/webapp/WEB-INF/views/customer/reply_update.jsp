@@ -14,7 +14,7 @@ $(function() {
     $("#button").click(function() {
        var recontent = $("#recontent").val();
         if (recontent == "") {
-          alert("내용을 입력하세요.");
+          alert("내용을 입력해주세요.");
           $("#recontent").focus();
           return false;
        }
