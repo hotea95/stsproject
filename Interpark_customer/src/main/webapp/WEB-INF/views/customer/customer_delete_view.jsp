@@ -8,7 +8,7 @@
 </head>
 <body>
 <script type="text/javascript">
-alert("입력하신${customerDTO.num}번의 문의를 삭제하였습니다.")
+alert("입력하신${customerDTO.num}번의 문의를 삭제하였습니다..")
 location.href="./CustomerSelect";
 </script>
 </body>
