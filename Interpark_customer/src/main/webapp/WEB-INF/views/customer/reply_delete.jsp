@@ -16,7 +16,7 @@
 <%-- 				<input type="text" name="retitle" id="retitle" value="${replyDTO.retitle}"> --%>
 			
 			<script type="text/javascript">
-			if (confirm("정말로 삭제하시겠습니까?")==true) {
+			if (confirm("정말로 삭제하시겠습니까??")==true) {
 				location.href="./replydelete1?renum=${replyDTO.renum}&num=${replyDTO.num}"
 			}else{
 				history.back();
