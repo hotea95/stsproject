@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<typeAliases>
+<typeAlias alias="CustomerDTO" type="spring.project.interpark.customer.dto.CustomerDTO"/>
+<typeAlias alias="ReplyDTO" type="spring.project.interpark.reply.dto.ReplyDTO"/>
+<typeAlias alias="MemberDTO" type="spring.project.interpark.member.dto.MemberDTO"/>
+
+</typeAliases>
+
+</configuration>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="spring.project.interpark">
+
+
+	<!-- <select id="member" parameterType="MemberDTO"> select id, password, 
+		mname, email, phone from member where mname = #{mname} </select> -->
+	<select id="cusselectAll" resultType="CustomerDTO"
+		parameterType="CustomerDTO">
+		SELECT num,
+		anytype,
+		TITLE,
+		CONTENT,
+		writedate
+		FROM (
+		SELECT
+		num,
+		anytype,
+		TITLE,
+		CONTENT,
+		writedate,
+		ROW_NUMBER() OVER(ORDER BY num
+		DESC) AS RNUM
+		FROM CUSTOMER
+		) MP
+		WHERE RNUM BETWEEN #{rowStart} AND
+		#{rowEnd}
+		ORDER BY num DESC
+
+	</select>
+
+	<select id="cusselect" parameterType="CustomerDTO"
+		resultType="CustomerDTO">
+		select num, anytype, title, content, writedate from
+		customer
+		where num = #{num}
+	</select>
+
+	<insert id="cusinsert" parameterType="CustomerDTO">
+		insert into customer (num,
+		anytype, title, content, writedate)
+		values(shin.nextval, #{anytype},
+		#{title}, #{content}, to_date(sysdate,'yyyy.mm.dd'))
+	</insert>
+
+	<update id="cusupdate" parameterType="CustomerDTO">
+		update customer set title =
+		#{title}, content=#{content}
+		where num = #{num}
+	</update>
+
+	<delete id="cusdelete" parameterType="CustomerDTO">
+
+   {call
+      declare
+      begin
+      
+      delete from reply
+		where
+		renum = #{renum}
+		and num = #{num};
+        
+        delete from customer
+		where 
+		num = #{num};
+      
+      
+      end
+      }
+
+	</delete>
+	
+	<select id="cuslistCount" resultType="int">
+	<![CDATA[
+		SELECT COUNT(num)
+		  FROM customer
+		 WHERE num > 0
+	]]>
+	</select>
+	
+	<select id="replyCount" resultType="int">
+	<![CDATA[
+		SELECT COUNT(renum)
+		  FROM reply
+		 WHERE num = #{num}
+	]]>
+	</select>
+
+	<!-- 댓글 조회 -->
+	<select id="readReply" resultType="ReplyDTO">
+		SELECT
+		renum, retitle,
+		recontent, redate
+		FROM reply
+		WHERE num = #{num}
+	</select>
+
+	<!-- 댓글 작성 -->
+	<insert id="replywrite" parameterType="ReplyDTO">
+		insert into
+		Reply(num,
+		renum, retitle, recontent)
+		values(#{num}, shin2.nextval, #{retitle},
+		#{recontent})
+	</insert>
+
+	<!-- 댓글 수정 -->
+	<update id="replyupdate" parameterType="ReplyDTO">
+		update reply set
+		recontent = #{recontent}
+		where renum = #{renum}
+		and num = #{num}
+	</update>
+
+	<!-- 댓글 삭제 -->
+	<delete id="replyDelete" parameterType="ReplyDTO">
+		delete from reply
+		where
+		renum = #{renum}
+		and num = ${num}
+	</delete>
+	
+	<!-- 회원 전체 조회 + 페이징 처리 -->
+	<select id="selectAll" resultType="MemberDTO">
+		select id, password, mname, email, phone
+		from(select rownum rnum, id, password, mname, email, phone
+		from(select id, password, mname, email, phone from member))
+		where rnum between #{rowStart} and #{rowEnd}
+	</select>
+	
+	<!-- 회원수 -->
+	<select id="listCount" resultType="int">
+		select count(*)
+		from member
+	</select>
+	
+	<!-- 회원 상세 조회 -->
+	<select id="select" parameterType="MemberDTO" resultType="MemberDTO">
+		select
+		id, password, mname, email, phone from member
+		where id = #{id}
+	</select>
+	
+	<!-- 회원 가입 -->
+	<insert id="insert" parameterType="MemberDTO">
+		insert into member 
+		(id, password, mname, email, phone)
+		values(#{id}, #{password}, #{mname}, #{email}, #{phone})
+	</insert>
+	
+	<!-- 회원 수정 -->
+	<update id="update" parameterType="MemberDTO">
+		update member set password = #{password}, mname = #{mname}, email = #{email}, phone = #{phone}
+		where id = #{id}
+	</update>
+	
+	<!-- 회원 삭제 -->
+	<delete id="delete" parameterType="MemberDTO">
+		delete from member
+		where id = #{id}
+	</delete>
+	
+	<!-- 로그인 -->
+	<select id="loginChk" parameterType="MemberDTO" resultType="int">
+		select count(*)
+		from member
+		where id = #{id} and password = #{password}
+	</select>
+	
+	<!-- 아이디 중복검사 -->
+ 	<select id="idChk" resultType="int">
+ 		select count(*)
+ 		from member
+ 		where id = #{id}
+ 	</select>
+ 	
+ 	<!-- 아이디 찾기 -->
+ 	<select id="findId" resultType="MemberDTO" parameterType="MemberDTO">
+ 		select id from member
+		where mname = #{mname} and email = #{email}
+ 	</select>
+ 	
+ 	<!-- 임시 비밀번호 발급 -->
+ 	<update id="findPassword" parameterType="MemberDTO">
+ 		update member
+		set password=#{password}
+		where id=#{id} and email = #{email}
+ 	</update>
+
+</mapper>
