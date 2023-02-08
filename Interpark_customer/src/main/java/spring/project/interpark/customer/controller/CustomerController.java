@@ -121,9 +121,9 @@ public class CustomerController {
 	@RequestMapping(value = "/replyupdate", method = RequestMethod.POST)
 	public String update(ReplyDTO replyDTO) throws Exception {
 		customerService.update(replyDTO);
-
-		// return "./customer/customer_delete";
 		return "redirect:/CustomerSelectDetail?num=" + replyDTO.getNum();
+		
+		// return "./customer/customer_update";
 
 	}
 	

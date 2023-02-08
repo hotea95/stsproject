@@ -37,7 +37,6 @@ $(function() {
 <input type="text" name="title" id="title" value="${customerDTO.title}"><br>
 <label for="content">내용</label>
 <textarea rows="5" cols="50" name="content" id="content"></textarea><br>
-<%-- <input type="text" name="content" id="content" value="${customerDTO.content}"> --%>
 
 <button type="submit" id="button">등록</button>
 <button type="reset" onclick="location.href='./CustomerSelect'">취소</button>
